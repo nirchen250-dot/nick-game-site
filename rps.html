@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .buttons {
+            margin: 20px;
+        }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .result {
+            margin: 20px;
+            font-size: 18px;
+        }
+        .scores {
+            margin: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock Paper Scissors</h1>
+    <a href="index.html">← Back to Menu</a>
+    <div class="buttons">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+    <div class="result" id="result"></div>
+    <div class="scores">
+        <div>Player: <span id="playerScore">0</span></div>
+        <div>Computer: <span id="computerScore">0</span></div>
+    </div>
+    <button id="reset">Reset Scores</button>
+
+    <script>
+        const choices = ['rock', 'paper', 'scissors'];
+        const images = {'rock': '🪨', 'paper': '📄', 'scissors': '✂️'};
+        let playerScore = 0;
+        let computerScore = 0;
+
+        document.getElementById('rock').addEventListener('click', () => playRound('rock'));
+        document.getElementById('paper').addEventListener('click', () => playRound('paper'));
+        document.getElementById('scissors').addEventListener('click', () => playRound('scissors'));
+        document.getElementById('reset').addEventListener('click', resetScores);
+
+        function playRound(playerChoice) {
+            const beatingChoice = getBeatingChoice(playerChoice);
+            const losingChoice = getLosingChoice(playerChoice);
+
+            // Computer chooses the beating choice 60% of the time, losing 40%
+
+            const rand = Math.random();
+            let computerChoice;
+            if (rand < 0.6) {
+                computerChoice = beatingChoice;
+            } else {
+                computerChoice = losingChoice;
+            }
+
+            let result = `You chose ${images[playerChoice]} ${playerChoice}, Computer chose ${images[computerChoice]} ${computerChoice}. `;
+
+            if ((playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')) {
+                result += 'You win!';
+                playerScore++;
+            } else {
+                result += 'Computer wins!';
+                computerScore++;
+            }
+
+            document.getElementById('result').textContent = result;
+            document.getElementById('playerScore').textContent = playerScore;
+            document.getElementById('computerScore').textContent = computerScore;
+        }
+
+        function getBeatingChoice(choice) {
+            switch(choice) {
+                case 'rock': return 'paper';
+                case 'paper': return 'scissors';
+                case 'scissors': return 'rock';
+            }
+        }
+
+        function getLosingChoice(choice) {
+            switch(choice) {
+                case 'rock': return 'scissors';
+                case 'paper': return 'rock';
+                case 'scissors': return 'paper';
+            }
+        }
+
+        function resetScores() {
+            playerScore = 0;
+            computerScore = 0;
+            document.getElementById('playerScore').textContent = playerScore;
+            document.getElementById('computerScore').textContent = computerScore;
+            document.getElementById('result').textContent = '';
+        }
+    </script>
+</body>
+</html>
